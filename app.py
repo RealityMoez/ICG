@@ -100,7 +100,7 @@ def main():
             caption = caption.replace('sseq', '').replace('eseq', '')
             # Remove leading and trailing spaces
             caption = caption.strip()
-            st.write("## Caption\n ", caption)
+            st.write("### ", caption)
 
 
 if __name__ == '__main__':
