@@ -8,7 +8,6 @@ from keras.models import load_model
 from keras.utils.image_utils import img_to_array, load_img
 from keras.applications.vgg16 import VGG16, preprocess_input
 from keras.utils import pad_sequences
-from keras.preprocessing.text import Tokenizer
 from keras.models import Model
 
 # Load the image caption generator model
