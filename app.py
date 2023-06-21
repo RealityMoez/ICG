@@ -4,12 +4,12 @@ import pickle
 import io
 import os
 from PIL import Image
-from keras.models import load_model
-from keras.utils.image_utils import img_to_array, load_img
-from keras.applications.vgg16 import VGG16, preprocess_input
-from keras.utils import pad_sequences, plot_model
-from keras.preprocessing.text import Tokenizer
-from keras.models import Model
+from tensorflow.keras.models import load_model
+from tensorflow.keras.utils.image_utils import img_to_array, load_img
+from tensorflow.keras.applications.vgg16 import VGG16, preprocess_input
+from tensorflow.keras.utils import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.models import Model
 
 # Load the image caption generator model
 icg_model = load_model("icgModel_3.h5")
