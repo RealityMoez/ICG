@@ -11,7 +11,7 @@ from keras.utils import pad_sequences
 from keras.models import Model
 
 # Load the image caption generator model
-icg_model = load_model("icgModel_6.h5")
+icg_model = load_model("icgModel_3.h5")
 
 # Load the captions tokenizer
 with open('captions_tokenizer.pickle', 'rb') as t:
