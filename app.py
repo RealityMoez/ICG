@@ -3,12 +3,15 @@ import numpy as np
 import pickle
 import io
 import os
+import gc
 from PIL import Image
 from keras.models import load_model
 from keras.utils.image_utils import img_to_array, load_img
 from keras.applications.vgg16 import VGG16, preprocess_input
 from keras.utils import pad_sequences
 from keras.models import Model
+
+gc.collect()
 
 # Load the image caption generator model
 icg_model = load_model("icgModel_6.h5")
