@@ -8,12 +8,19 @@ from PIL import Image
 from keras.models import load_model
 from keras.utils.image_utils import img_to_array, load_img
 from keras.applications.vgg16 import VGG16, preprocess_input
+from keras.preprocessing.text import Tokenizer
 from keras.utils import pad_sequences
 from keras.models import Model
 
-# Load the image caption generator model
-icg_model = load_model("icg_model_v15.h5")
+gc.collect()
 
+# Load the image caption generator model
+icg_model = load_model("icg_model_v15.h5", compile=False)
+if icg_model is not None:
+    icg_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+
+tokenizer = Tokenizer()
 # Load the captions tokenizer
 with open('captions_tokenizer_new.pickle', 'rb') as t:
     tokenizer = pickle.load(t)
@@ -31,54 +38,26 @@ def save_uploaded_image(uploaded_file):
         f.write(uploaded_file.getbuffer())
     return image_path
 
-def indexToWord(integer, tokenizer):
-    for word, index in tokenizer.word_index.items():
-        if index == integer:
-            return word
-    return None
+# Function to extract features from images using VGG16
+def extract_features(img_path):
+    img = load_img(img_path, target_size=(224, 224))
+    x = img_to_array(img)
+    x = np.expand_dims(x, axis=0)
+    x = preprocess_input(x)
+    features = vgg16.predict(x, verbose=0) # type: ignore
+    return features
 
-def preprocess_image(img_path):
-    image = load_img(img_path, target_size=(224, 224))
-    # convert image pixels to numpy array
-    image = img_to_array(image)
-    # reshape image
-    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-    # preprocess image for vgg
-    image = preprocess_input(image)
-    # extract features
-    image_features = vgg16.predict(image, verbose='0')
-    return image_features
-
-def generate_caption(img_path, model, tokenizer, maxCaptionLength):
-    imageFeatures = preprocess_image(img_path)
-    # add start tag for generation process
+def generate_caption(model, tokenizer, img_features, max_caption_length):
     caption = 'sseq'
-    # iterate over the max length of sequence
-    for i in range(maxCaptionLength):
-        # encode input sequence
-        sequence = tokenizer.texts_to_sequences([caption])[0]
-        # pad the sequence
-        sequence = pad_sequences([sequence], maxCaptionLength)
-        
-        # Check if the shapes and data types match the model's inputs
-        if imageFeatures.shape != (1, 4096) or sequence.shape != (1, 35):
-            return "Error: Invalid input shape or data type"
-        
-        # predict next word
-        predictions = model.predict([imageFeatures, sequence], verbose=0)
-        # get word index with the highest probability
-        outputWordIndex = np.argmax(predictions)
-        # convert index to word
-        word = indexToWord(outputWordIndex, tokenizer)
-        # stop if word is not found in vocabulary
-        if word is None:
-            break
-        # append word as input for generating next word
-        caption += " " + word
-        # stop if we reach the end of sequence
+    for i in range(max_caption_length):
+        caption_sequence = tokenizer.texts_to_sequences([caption])[0]
+        caption_sequence = pad_sequences([caption_sequence], maxlen=max_caption_length)
+        predictions = model.predict([img_features, caption_sequence], verbose=0)
+        predicted_index = np.argmax(predictions)
+        word = tokenizer.index_word[predicted_index]
+        caption += ' ' + word
         if word == 'eseq':
-            break
-
+            break   
     return caption
 
 def main():
@@ -96,7 +75,8 @@ def main():
             if icg_model is None:
                 return st.write("Model: failed to load the model")
             gc.collect()
-            caption = generate_caption(image_path, icg_model, tokenizer, 35)
+            img_features = extract_features(image_path)
+            caption = generate_caption(icg_model, tokenizer, img_features, 34)
             # Trim the caption by removing 'sseq' and 'eseq'
             caption = caption.replace('sseq', '').replace('eseq', '')
             # Remove leading and trailing spaces
