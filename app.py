@@ -15,7 +15,7 @@ from keras.models import Model
 icg_model = load_model("icg_model_v15.h5")
 
 # Load the captions tokenizer
-with open('captions_tokenizer.pickle', 'rb') as t:
+with open('captions_tokenizer_new.pickle', 'rb') as t:
     tokenizer = pickle.load(t)
 
 vgg16 = VGG16()
