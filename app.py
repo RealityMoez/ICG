@@ -11,8 +11,6 @@ from keras.applications.vgg16 import VGG16, preprocess_input
 from keras.utils import pad_sequences
 from keras.models import Model
 
-gc.collect()
-
 # Load the image caption generator model
 icg_model = load_model("icg_model_v15.h5")
 
@@ -97,6 +95,7 @@ def main():
         if st.button('Generate Caption'):
             if icg_model is None:
                 return st.write("Model: failed to load the model")
+            gc.collect()
             caption = generate_caption(image_path, icg_model, tokenizer, 35)
             # Trim the caption by removing 'sseq' and 'eseq'
             caption = caption.replace('sseq', '').replace('eseq', '')
