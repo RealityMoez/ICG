@@ -14,7 +14,7 @@ from keras.models import Model
 gc.collect()
 
 # Load the image caption generator model
-icg_model = load_model("icgModel_3.h5")
+icg_model = load_model("icg_model_v15.h5")
 
 # Load the captions tokenizer
 with open('captions_tokenizer.pickle', 'rb') as t:
