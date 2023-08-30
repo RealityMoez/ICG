@@ -15,7 +15,7 @@ from keras.models import Model
 gc.collect()
 
 # Load the image caption generator model
-icg_model = load_model("icg_model_v15.h5", compile=False)
+icg_model = load_model("icg_model_v18_2.h5", compile=False)
 if icg_model is not None:
     icg_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
@@ -86,12 +86,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
-#if icg_model is not None:
-#        # Capture the model summary
-#        buffer = io.StringIO()
-#        icg_model.summary(print_fn=lambda x: buffer.write(x + '\n'))  # Capture the summary output
-#
-#        # Display the model summary
-#        summary = buffer.getvalue()
-#        st.code(summary)
