@@ -4,3 +4,5 @@
 > ***Using pre-trained model VGG16 to extract image features.***
 
 > ***Deployed with Streamlit.***
+
+[Notebook link](https://github.com/RealityMoez/ImageCaptionGenerator)
