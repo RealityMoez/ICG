@@ -1,6 +1,6 @@
 # Generate Captions for Images
 
-[Notebook repo](https://github.com/RealityMoez/ImageCaptionGenerator)
+[Notebook source](https://github.com/RealityMoez/ImageCaptionGenerator)
 
 [Demo](https://captioning.streamlit.app)
 
