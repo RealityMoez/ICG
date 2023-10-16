@@ -1,6 +1,6 @@
 # Generate Captions for Images
 
-[Notebook link](https://github.com/RealityMoez/ImageCaptionGenerator)
+[Notebook repo](https://github.com/RealityMoez/ImageCaptionGenerator)
 
 > ***Deep Learning using Embedding, Dense and LSTM layers for model architecture.***
 
